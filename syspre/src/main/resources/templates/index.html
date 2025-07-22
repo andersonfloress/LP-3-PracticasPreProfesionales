@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSPRE - Sistema de Prácticas Pre-profesionales</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-unap text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-graduation-cap text-3xl"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold">SYSPRE</h1>
+                        <p class="text-blue-200 text-sm">Sistema de Prácticas Pre-profesionales</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-blue-200 text-sm">Universidad Nacional del Altiplano</p>
+                    <p class="text-blue-200 text-sm">Facultad de Ingeniería de Sistemas</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                Bienvenido al Sistema SYSPRE
+            </h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Gestiona todo el proceso de prácticas pre-profesionales de manera eficiente y organizada
+            </p>
+        </div>
+
+        <!-- Role Selection Cards -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <!-- Estudiante -->
+            <div class="role-card bg-white rounded-xl p-8 card-shadow text-center"
+                 onclick="window.location.href='/login/estudiante'">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user-graduate text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Estudiante</h3>
+                <p class="text-gray-600 mb-4">
+                    Registra planes, reportes semanales e informes finales de tus prácticas
+                </p>
+                <button class="btn-primary w-full py-2 px-4 rounded-lg text-white font-medium">
+                    Acceder como Estudiante
+                </button>
+            </div>
+
+            <!-- Docente -->
+            <div class="role-card bg-white rounded-xl p-8 card-shadow text-center"
+                 onclick="window.location.href='/login/docente'">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-chalkboard-teacher text-2xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Docente</h3>
+                <p class="text-gray-600 mb-4">
+                    Supervisa, califica y evalúa el progreso de los estudiantes
+                </p>
+                <button class="bg-green-600 hover:bg-green-700 w-full py-2 px-4 rounded-lg text-white font-medium transition">
+                    Acceder como Docente
+                </button>
+            </div>
+
+            <!-- Coordinador -->
+            <div class="role-card bg-white rounded-xl p-8 card-shadow text-center"
+                 onclick="window.location.href='/login/coordinador'">
+                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-users-cog text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Coordinador</h3>
+                <p class="text-gray-600 mb-4">
+                    Coordina procesos, asigna docentes y gestiona sustentaciones
+                </p>
+                <button class="bg-purple-600 hover:bg-purple-700 w-full py-2 px-4 rounded-lg text-white font-medium transition">
+                    Acceder como Coordinador
+                </button>
+            </div>
+
+            <!-- Administrador -->
+            <div class="role-card bg-white rounded-xl p-8 card-shadow text-center"
+                 onclick="window.location.href='/login/admin'">
+                <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user-shield text-2xl text-red-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Administrador</h3>
+                <p class="text-gray-600 mb-4">
+                    Administra el sistema, usuarios y configuraciones generales
+                </p>
+                <button class="bg-red-600 hover:bg-red-700 w-full py-2 px-4 rounded-lg text-white font-medium transition">
+                    Acceder como Admin
+                </button>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="mt-20">
+            <h3 class="text-2xl font-bold text-center text-gray-800 mb-12">
+                Funcionalidades del Sistema
+            </h3>
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-file-alt text-blue-600"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">Gestión de Documentos</h4>
+                    <p class="text-gray-600 text-sm">Planes de práctica, reportes semanales e informes finales</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tasks text-green-600"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">Seguimiento</h4>
+                    <p class="text-gray-600 text-sm">Control de estados y progreso en tiempo real</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-purple-600"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">Evaluación</h4>
+                    <p class="text-gray-600 text-sm">Sistema de calificación y sustentaciones</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Universidad Nacional del Altiplano - Facultad de Ingeniería de Sistemas</p>
+            <p class="text-gray-400 text-sm mt-2">Sistema de Prácticas Pre-profesionales - SYSPRE</p>
+        </div>
+    </footer>
+</body>
+</html>

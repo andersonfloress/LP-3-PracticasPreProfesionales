@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Coordinador - SYSPRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Navegación Superior -->
+    <nav class="bg-purple-600 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <img src="/static/img/unap.png" alt="UNAP Logo" class="w-10 h-10">
+                    <span class="text-xl font-bold">SYSPRE</span>
+                    <span class="text-sm opacity-75">| Coordinador</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm">Coordinador</span>
+                    <a href="/coordinador/documentos/gestionar" class="text-purple-200 hover:text-white text-sm mr-4">
+                        <i class="fas fa-folder-open"></i> Documentos
+                    </a>
+                    <form method="POST" action="/logout" class="inline">
+                        <button type="submit" class="text-purple-200 hover:text-white text-sm">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Header del Dashboard -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Dashboard del Coordinador</h1>
+            <p class="text-gray-600 mt-2">Coordinación y gestión de prácticas pre-profesionales</p>
+        </div>
+
+        <!-- Estadísticas Generales -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg p-6 shadow-sm border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Estudiantes Activos</p>
+                        <p class="text-2xl font-bold text-gray-900" th:text="${estudiantesActivos}">0</p>
+                    </div>
+                    <i class="fas fa-users text-2xl text-blue-600"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Planes Aprobados</p>
+                        <p class="text-2xl font-bold text-gray-900" th:text="${planesAprobados}">0</p>
+                    </div>
+                    <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Asignaciones Pendientes</p>
+                        <p class="text-2xl font-bold text-gray-900" th:text="${asignacionesPendientes}">0</p>
+                    </div>
+                    <i class="fas fa-user-plus text-2xl text-orange-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tareas del Coordinador -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            
+            <!-- Planes para Revisar -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-clipboard-check text-purple-600 mr-2"></i>
+                        Planes para Revisar
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-check-circle text-4xl mb-4"></i>
+                        <p>No hay planes pendientes de revisión</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estudiantes sin Asignar -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-user-plus text-orange-600 mr-2"></i>
+                        Estudiantes sin Asignar
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div th:if="${estudiantesSinAsignar.empty}" class="text-center text-gray-500 py-8">
+                        <i class="fas fa-check-circle text-4xl mb-4"></i>
+                        <p>Todos los estudiantes tienen docente asignado</p>
+                    </div>
+                    
+                    <div th:unless="${estudiantesSinAsignar.empty}">
+                        <div th:each="estudiante : ${estudiantesSinAsignar}" 
+                             class="flex items-center justify-between p-4 border border-gray-200 rounded-lg mb-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-user-graduate text-blue-600 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900" 
+                                        th:text="|${estudiante.nombres} ${estudiante.apellidos}|">Nombre Estudiante</h4>
+                                    <p class="text-sm text-gray-600" th:text="${estudiante.codigo}">Código</p>
+                                    <p class="text-xs text-gray-500" th:text="${estudiante.email}">Email</p>
+                                </div>
+                            </div>
+                            <a th:href="@{/coordinador/asignar-docente/{id}(id=${estudiante.id})}" 
+                               class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition text-sm">
+                                <i class="fas fa-user-plus mr-1"></i>
+                                Asignar Docente
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nueva sección: Estudiantes con Docente Asignado -->
+        <div class="bg-white rounded-lg shadow-sm border mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-user-check text-green-600 mr-2"></i>
+                    Estudiantes con Docente Asignado
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">Lista de estudiantes que ya tienen asesor designado</p>
+            </div>
+            <div class="p-6">
+                <div th:if="${estudiantesConAsignacion.empty}" class="text-center text-gray-500 py-8">
+                    <i class="fas fa-users-slash text-4xl mb-4"></i>
+                    <p>No hay estudiantes con asignación de docente</p>
+                </div>
+                
+                <div th:unless="${estudiantesConAsignacion.empty}">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Estudiante
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Docente Asesor
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Fecha Asignación
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr th:each="estudiante : ${estudiantesConAsignacion}">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-user-graduate text-blue-600 mr-3"></i>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900" 
+                                                     th:text="|${estudiante.nombres} ${estudiante.apellidos}|">
+                                                    Nombre Estudiante
+                                                </div>
+                                                <div class="text-sm text-gray-500">
+                                                    <span th:text="${estudiante.codigo}">Código</span> • 
+                                                    <span th:text="${estudiante.email}">Email</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-user-tie text-purple-600 mr-3"></i>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900" 
+                                                     th:text="|${estudiante.docente_nombres} ${estudiante.docente_apellidos}|">
+                                                    Nombre Docente
+                                                </div>
+                                                <div class="text-sm text-gray-500" th:text="${estudiante.docente_email}">
+                                                    Email Docente
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-calendar text-gray-400 mr-2"></i>
+                                            <span th:text="${estudiante.fecha_asignacion}">
+                                                Fecha
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <a th:href="@{/coordinador/asignacion/{id}/ver(id=${estudiante.id})}" 
+                                               class="text-blue-600 hover:text-blue-900">
+                                                <i class="fas fa-eye mr-1"></i>Ver Detalles
+                                            </a>
+                                            <span class="text-gray-300">|</span>
+                                            <a th:href="@{/coordinador/asignacion/{id}/cambiar(id=${estudiante.id})}" 
+                                               class="text-orange-600 hover:text-orange-900">
+                                                <i class="fas fa-exchange-alt mr-1"></i>Cambiar
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión de Documentos por Especialidad -->
+        <div class="bg-white rounded-lg shadow-sm border mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-file-upload text-indigo-600 mr-2"></i>
+                    Documentos de la Especialidad
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">Subir documentos que serán visibles para todos los estudiantes de <span th:text="${user.especialidad}">la especialidad</span></p>
+            </div>
+            <div class="p-6">
+                <form action="/coordinador/documentos/subir" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Documento 1 -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-file-pdf text-red-600 mr-1"></i>
+                                Documento Principal
+                            </label>
+                            <input type="file" name="documento1" accept=".pdf" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" name="titulo1" placeholder="Título del documento" 
+                                   class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <textarea name="descripcion1" placeholder="Descripción opcional" rows="2"
+                                      class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                        </div>
+                        
+                        <!-- Documento 2 -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-file-pdf text-red-600 mr-1"></i>
+                                Documento Secundario
+                            </label>
+                            <input type="file" name="documento2" accept=".pdf" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" name="titulo2" placeholder="Título del documento" 
+                                   class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <textarea name="descripcion2" placeholder="Descripción opcional" rows="2"
+                                      class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button type="submit" 
+                                class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
+                            <i class="fas fa-upload mr-2"></i>
+                            Subir Documentos
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Lista de documentos existentes -->
+                <div class="mt-8 border-t border-gray-200 pt-6">
+                    <h3 class="text-lg font-medium text-gray-800 mb-4">Documentos Publicados</h3>
+                    
+                    <!-- Ayuda para descargas -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-blue-600 mr-3 mt-0.5"></i>
+                            <div>
+                                <h4 class="text-sm font-medium text-blue-800 mb-1">Información sobre descargas</h4>
+                                <p class="text-sm text-blue-700">
+                                    Si tienes problemas al descargar archivos, verifica que tu navegador 
+                                    no esté bloqueando las descargas automáticas. También puedes intentar 
+                                    hacer clic derecho en "Descargar" y seleccionar "Guardar enlace como...".
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${documentosEspecialidad != null and !documentosEspecialidad.empty}">
+                        <div class="space-y-3">
+                            <div th:each="documento : ${documentosEspecialidad}" 
+                                 class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center">
+                                    <i class="fas fa-file-pdf text-red-600 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900" th:text="${documento.titulo}">Título del documento</h4>
+                                        <p class="text-sm text-gray-600" th:text="${documento.descripcion}">Descripción</p>
+                                        <p class="text-xs text-gray-500">
+                                            Subido: <span th:text="${#dates.format(documento.created_at, 'dd/MM/yyyy HH:mm')}">Fecha</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <a th:href="@{/coordinador/documento/{id}/descargar(id=${documento.id})}" 
+                                       class="text-blue-600 hover:text-blue-800 text-sm">
+                                        <i class="fas fa-download mr-1"></i>Descargar
+                                    </a>
+                                    <a th:href="@{/coordinador/documento/{id}/eliminar(id=${documento.id})}" 
+                                       class="text-red-600 hover:text-red-800 text-sm"
+                                       onclick="return confirm('¿Eliminar este documento?')">
+                                        <i class="fas fa-trash mr-1"></i>Eliminar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${documentosEspecialidad == null or documentosEspecialidad.empty}" 
+                         class="text-center text-gray-500 py-6">
+                        <i class="fas fa-folder-open text-3xl mb-2"></i>
+                        <p>No hay documentos publicados para esta especialidad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="bg-white rounded-lg shadow-sm border p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="/coordinador/planes" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-file-alt text-blue-600 text-xl mr-3"></i>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Revisar Planes</h3>
+                        <p class="text-sm text-gray-600">Revisar planes de práctica</p>
+                    </div>
+                </a>
+                
+                <a href="/coordinador/asignaciones" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-user-plus text-purple-600 text-xl mr-3"></i>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Asignar Docentes</h3>
+                        <p class="text-sm text-gray-600">Gestionar asignaciones</p>
+                    </div>
+                </a>
+                
+                <a href="/coordinador/sustentaciones" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-award text-green-600 text-xl mr-3"></i>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Sustentaciones</h3>
+                        <p class="text-sm text-gray-600">Programar sustentaciones</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Universidad Nacional del Altiplano - SYSPRE</p>
+        </div>
+    </footer>
+
+    <!-- Modal para Asignar Docente -->
+    <div id="modalAsignar" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-user-plus text-orange-600 mr-2"></i>
+                        Asignar Docente Asesor
+                    </h3>
+                </div>
+                
+                <form id="formAsignar" action="/coordinador/asignar-docente" method="POST" class="p-6">
+                    <input type="hidden" id="estudianteId" name="estudiante_id">
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Estudiante Seleccionado:
+                        </label>
+                        <p id="estudianteNombre" class="text-base font-medium text-gray-900 bg-gray-50 p-3 rounded"></p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="docenteSelect" class="block text-sm font-medium text-gray-700 mb-2">
+                            Seleccionar Docente Asesor:
+                        </label>
+                        <select id="docenteSelect" name="docente_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" required>
+                            <option value="">-- Seleccionar Docente --</option>
+                            <option th:each="docente : ${docentes}" 
+                                    th:value="${docente.id}" 
+                                    th:text="|${docente.nombres} ${docente.apellidos}|">
+                                Docente Nombre
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="cerrarModalAsignar()" 
+                                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Cancelar
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-orange-600 text-white rounded-md text-sm font-medium hover:bg-orange-700">
+                            <i class="fas fa-check mr-1"></i>
+                            Asignar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function abrirModalAsignar(estudianteId, nombres, apellidos) {
+            document.getElementById('estudianteId').value = estudianteId;
+            document.getElementById('estudianteNombre').textContent = nombres + ' ' + apellidos;
+            document.getElementById('modalAsignar').classList.remove('hidden');
+        }
+        
+        function cerrarModalAsignar() {
+            document.getElementById('modalAsignar').classList.add('hidden');
+            document.getElementById('docenteSelect').value = '';
+        }
+        
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('modalAsignar').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModalAsignar();
+            }
+        });
+    </script>
+</body>
+</html>

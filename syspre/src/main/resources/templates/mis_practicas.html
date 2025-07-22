@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Prácticas - SYSPRE 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-50 font-sans">
+  <header class="bg-white shadow-lg border-b-4 border-blue-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-6">
+        <div class="flex items-center">
+          <i class="fas fa-user-graduate text-3xl text-blue-600 mr-3"></i>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">Mis Prácticas Pre-Profesionales</h1>
+            <p class="text-sm text-gray-600">SYSPRE 2025</p>
+          </div>
+        </div>
+        
+        <nav class="hidden md:flex space-x-8">
+          <a href="/dashboard/estudiante" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+          </a>
+          <a href="/mis-practicas" class="text-blue-600 font-medium">
+            <i class="fas fa-briefcase mr-2"></i>Mis Prácticas
+          </a>
+          <a href="/perfil/estudiante" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-user mr-2"></i>Mi Perfil
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <!-- Estado General -->
+    <div class="bg-white rounded-lg shadow mb-6 p-6">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Estado de mis Prácticas</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Práctica Actual -->
+        <div class="bg-blue-50 p-4 rounded-lg">
+          <div class="flex items-center">
+            <i class="fas fa-play-circle text-2xl text-blue-600 mr-3"></i>
+            <div>
+              <h3 class="text-lg font-semibold text-blue-800">Práctica Actual</h3>
+              <p class="text-sm text-blue-600">En proceso</p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <p class="text-sm text-gray-700"><strong>Empresa:</strong> Tech Solutions SAC</p>
+            <p class="text-sm text-gray-700"><strong>Inicio:</strong> 15 Enero 2025</p>
+            <div class="mt-2">
+              <div class="flex items-center">
+                <div class="flex-1 bg-gray-200 rounded-full h-2 mr-2">
+                  <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                </div>
+                <span class="text-sm text-gray-600">65%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Horas Completadas -->
+        <div class="bg-green-50 p-4 rounded-lg">
+          <div class="flex items-center">
+            <i class="fas fa-clock text-2xl text-green-600 mr-3"></i>
+            <div>
+              <h3 class="text-lg font-semibold text-green-800">Horas Completadas</h3>
+              <p class="text-2xl font-bold text-green-600">156 / 240</p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <p class="text-sm text-gray-700">Faltan <strong>84 horas</strong> para completar</p>
+          </div>
+        </div>
+        
+        <!-- Próximo Reporte -->
+        <div class="bg-yellow-50 p-4 rounded-lg">
+          <div class="flex items-center">
+            <i class="fas fa-file-alt text-2xl text-yellow-600 mr-3"></i>
+            <div>
+              <h3 class="text-lg font-semibold text-yellow-800">Próximo Reporte</h3>
+              <p class="text-sm text-yellow-600">Vence en 5 días</p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <p class="text-sm text-gray-700"><strong>Fecha límite:</strong> 28 Enero 2025</p>
+            <button class="mt-2 bg-yellow-600 text-white px-3 py-1 rounded text-sm hover:bg-yellow-700">
+              Crear Reporte
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalles de la Práctica Actual -->
+    <div class="bg-white rounded-lg shadow mb-6">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900">Detalles de la Práctica Actual</h3>
+      </div>
+      
+      <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-gray-800 mb-3">Información de la Empresa</h4>
+            <div class="space-y-2">
+              <p class="text-sm"><strong>Empresa:</strong> Tech Solutions SAC</p>
+              <p class="text-sm"><strong>Supervisor:</strong> Ing. Carlos Mendoza</p>
+              <p class="text-sm"><strong>Email:</strong> cmendoza@techsolutions.com</p>
+              <p class="text-sm"><strong>Teléfono:</strong> +51 987 654 321</p>
+              <p class="text-sm"><strong>Área:</strong> Desarrollo de Software</p>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="text-md font-semibold text-gray-800 mb-3">Información Académica</h4>
+            <div class="space-y-2">
+              <p class="text-sm"><strong>Docente Asesor:</strong> Dr. Juan García</p>
+              <p class="text-sm"><strong>Email:</strong> jgarcia@universidad.edu.pe</p>
+              <p class="text-sm"><strong>Fecha de Inicio:</strong> 15 Enero 2025</p>
+              <p class="text-sm"><strong>Fecha de Fin:</strong> 15 Abril 2025</p>
+              <p class="text-sm"><strong>Duración:</strong> 240 horas académicas</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <h4 class="text-md font-semibold text-gray-800 mb-3">Objetivos de la Práctica</h4>
+          <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+            <li>Desarrollar aplicaciones web utilizando tecnologías modernas</li>
+            <li>Aplicar metodologías ágiles de desarrollo de software</li>
+            <li>Trabajar en equipo multidisciplinario</li>
+            <li>Documentar procesos y resultados de desarrollo</li>
+            <li>Participar en reuniones de planificación y seguimiento</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Historial de Reportes -->
+    <div class="bg-white rounded-lg shadow mb-6">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">Historial de Reportes</h3>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200">
+          <i class="fas fa-plus mr-2"></i>Nuevo Reporte
+        </button>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Período</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Horas Reportadas</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actividades</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha Entrega</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Semana 1-2</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">40 horas</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Inducción y capacitación inicial</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  Aprobado
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">18/01/2025</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button class="text-blue-600 hover:text-blue-900 mr-3" title="Ver reporte">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="text-green-600 hover:text-green-900" title="Descargar">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Semana 3-4</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">38 horas</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Desarrollo de módulo de usuarios</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  Aprobado
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">25/01/2025</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button class="text-blue-600 hover:text-blue-900 mr-3" title="Ver reporte">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="text-green-600 hover:text-green-900" title="Descargar">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Semana 5-6</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">42 horas</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Implementación de API REST</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                  Revisión
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">01/02/2025</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button class="text-blue-600 hover:text-blue-900 mr-3" title="Ver reporte">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="text-orange-600 hover:text-orange-900" title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Semana 7-8</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">36 horas</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Testing y documentación</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                  En Proceso
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">08/02/2025</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button class="text-green-600 hover:text-green-900" title="Completar">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Documentos y Recursos -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900">Documentos y Recursos</h3>
+      </div>
+      
+      <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-md font-semibold text-gray-800 mb-3">Documentos Importantes</h4>
+            <div class="space-y-2">
+              <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-file-pdf text-red-500 mr-3"></i>
+                <div>
+                  <p class="text-sm font-medium">Plan de Prácticas</p>
+                  <p class="text-xs text-gray-500">Documento oficial aprobado</p>
+                </div>
+              </a>
+              
+              <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-file-word text-blue-500 mr-3"></i>
+                <div>
+                  <p class="text-sm font-medium">Formato de Reportes</p>
+                  <p class="text-xs text-gray-500">Plantilla para reportes semanales</p>
+                </div>
+              </a>
+              
+              <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-file-excel text-green-500 mr-3"></i>
+                <div>
+                  <p class="text-sm font-medium">Control de Horas</p>
+                  <p class="text-xs text-gray-500">Registro detallado de actividades</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="text-md font-semibold text-gray-800 mb-3">Recursos Útiles</h4>
+            <div class="space-y-2">
+              <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-book text-purple-500 mr-3"></i>
+                <div>
+                  <p class="text-sm font-medium">Manual del Practicante</p>
+                  <p class="text-xs text-gray-500">Guía completa para estudiantes</p>
+                </div>
+              </a>
+              
+              <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-video text-red-500 mr-3"></i>
+                <div>
+                  <p class="text-sm font-medium">Videos Tutoriales</p>
+                  <p class="text-xs text-gray-500">Capacitación en línea</p>
+                </div>
+              </a>
+              
+              <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-phone text-green-500 mr-3"></i>
+                <div>
+                  <p class="text-sm font-medium">Contactos de Emergencia</p>
+                  <p class="text-xs text-gray-500">Números importantes</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Funcionalidad de botones
+    document.querySelector('button[class*="bg-yellow-600"]').addEventListener('click', function() {
+      alert('Redirigiendo al formulario de nuevo reporte...');
+    });
+
+    document.querySelector('button[class*="bg-blue-600"]').addEventListener('click', function() {
+      alert('Creando nuevo reporte semanal...');
+    });
+
+    // Botones de la tabla
+    document.querySelectorAll('button[title="Ver reporte"]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        alert('Abriendo vista detallada del reporte');
+      });
+    });
+
+    document.querySelectorAll('button[title="Descargar"]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        alert('Descargando reporte en PDF...');
+      });
+    });
+
+    document.querySelector('button[title="Editar"]').addEventListener('click', function() {
+      alert('Editando reporte en revisión...');
+    });
+
+    document.querySelector('button[title="Completar"]').addEventListener('click', function() {
+      alert('Completando reporte actual...');
+    });
+
+    // Enlaces de documentos
+    document.querySelectorAll('a[href="#"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const docName = this.querySelector('p').textContent;
+        alert(`Abriendo: ${docName}`);
+      });
+    });
+  </script>
+</body>
+</html>

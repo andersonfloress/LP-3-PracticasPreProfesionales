@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificar Sustentación - SYSPRE 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        principal: '#3aa87a',
+                        fondo: '#f1f5f9',
+                        texto: '#1e293b',
+                        gris: '#64748b',
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-fondo text-texto font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/docente/dashboard" class="text-xl font-bold text-texto flex items-center gap-2">
+                <i class="fas fa-gavel"></i> SYSPRE 2025 - Presidente Jurado
+            </a>
+            <div class="space-x-6 hidden md:flex">
+                <a href="/docente/dashboard" class="text-gris hover:text-texto transition">
+                    <i class="fas fa-arrow-left mr-1"></i>Volver al Dashboard
+                </a>
+                <form method="POST" action="/logout" class="inline">
+                    <button type="submit" class="text-gris hover:text-texto transition">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-6xl mx-auto px-4">
+        <!-- Mensajes -->
+        <div th:if="${success}" class="mb-6 p-4 rounded-lg bg-green-100 text-green-800">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span th:text="${success}">Sustentación procesada exitosamente</span>
+        </div>
+        
+        <div th:if="${error}" class="mb-6 p-4 rounded-lg bg-red-100 text-red-800">
+            <i class="fas fa-times-circle mr-2"></i>
+            <span th:text="${error}">Error al procesar la sustentación</span>
+        </div>
+
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h1 class="text-3xl font-bold text-texto flex items-center mb-4">
+                <i class="fas fa-gavel mr-3 text-principal"></i>
+                Calificar Sustentación
+            </h1>
+            <div class="bg-blue-50 rounded-lg p-4" th:if="${sustentacion}">
+                <h2 class="text-xl font-semibold text-blue-800 mb-2">Información de la Sustentación</h2>
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p><strong>Estudiante:</strong> <span th:text="${sustentacion.estudiante_nombres + ' ' + sustentacion.estudiante_apellidos}">Juan Pérez</span></p>
+                        <p><strong>Código:</strong> <span th:text="${sustentacion.estudiante_codigo}">2020123456</span></p>
+                        <p><strong>Fecha:</strong> <span th:text="${#temporals.format(sustentacion.fecha_sustentacion, 'dd/MM/yyyy')}">25/07/2025</span></p>
+                        <p><strong>Hora:</strong> <span th:text="${sustentacion.hora_sustentacion}">14:00</span></p>
+                    </div>
+                    <div>
+                        <p><strong>Lugar:</strong> <span th:text="${sustentacion.lugar}">Aula 101</span></p>
+                        <p><strong>Vocal:</strong> <span th:text="${sustentacion.vocal_nombres + ' ' + sustentacion.vocal_apellidos}">María García</span></p>
+                        <p><strong>Secretario:</strong> <span th:text="${sustentacion.secretario_nombres + ' ' + sustentacion.secretario_apellidos}">Carlos López</span></p>
+                        <p><strong>Estado:</strong> 
+                            <span th:class="${sustentacion.estado == 'aprobado'} ? 'px-2 py-1 rounded text-xs bg-green-100 text-green-800' : 
+                                           (${sustentacion.estado == 'rechazado'} ? 'px-2 py-1 rounded text-xs bg-red-100 text-red-800' : 
+                                           'px-2 py-1 rounded text-xs bg-yellow-100 text-yellow-800')"
+                                  th:text="${#strings.capitalize(sustentacion.estado)}">
+                                Programado
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informe del Estudiante -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8" th:if="${informe}">
+            <h2 class="text-2xl font-bold text-texto mb-4 flex items-center">
+                <i class="fas fa-file-alt mr-3 text-principal"></i>
+                Informe Final del Estudiante
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-gray-700 mb-2">Título del Informe</h3>
+                    <p class="text-sm text-gray-600 mb-4" th:text="${informe.titulo ?: 'No especificado'}">Sistema de Gestión de Inventarios</p>
+                    
+                    <h3 class="font-semibold text-gray-700 mb-2">Resumen Ejecutivo</h3>
+                    <p class="text-sm text-gray-600 mb-4" th:text="${#strings.abbreviate(informe.resumen_ejecutivo ?: '', 200)}">Durante las prácticas se desarrolló un sistema completo...</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-700 mb-2">Calificación del Docente</h3>
+                    <p class="text-sm text-gray-600 mb-4" th:text="${informe.calificacion_docente ?: 'Sin calificar'}">18.5</p>
+                    
+                    <h3 class="font-semibold text-gray-700 mb-2">Estado del Informe</h3>
+                    <span th:class="${informe.estado == 'aprobado_final'} ? 'px-2 py-1 rounded text-xs bg-green-100 text-green-800' : 
+                                    'px-2 py-1 rounded text-xs bg-yellow-100 text-yellow-800'"
+                          th:text="${#strings.capitalize(informe.estado)}">
+                        Aprobado Final
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de Calificación -->
+        <div class="bg-white rounded-lg shadow p-6" th:if="${sustentacion != null && sustentacion.estado == 'programado'}">
+            <h2 class="text-2xl font-bold text-texto mb-6 flex items-center">
+                <i class="fas fa-clipboard-check mr-3 text-principal"></i>
+                Calificación de la Sustentación
+            </h2>
+
+            <form method="POST" th:action="'/docente/sustentacion/' + ${sustentacion.id} + '/calificar'" class="space-y-6">
+                
+                <!-- Criterios de Evaluación -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">Criterios de Evaluación</h3>
+                        
+                        <div>
+                            <label for="calificacion_presentacion" class="block text-sm font-medium text-gray-700 mb-2">
+                                Presentación Oral (0-20) *
+                            </label>
+                            <input type="number" id="calificacion_presentacion" name="calificacion_presentacion" 
+                                   min="0" max="20" step="0.5" required
+                                   placeholder="18.5"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-principal focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label for="calificacion_contenido" class="block text-sm font-medium text-gray-700 mb-2">
+                                Contenido Técnico (0-20) *
+                            </label>
+                            <input type="number" id="calificacion_contenido" name="calificacion_contenido" 
+                                   min="0" max="20" step="0.5" required
+                                   placeholder="17.0"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-principal focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label for="calificacion_defensa" class="block text-sm font-medium text-gray-700 mb-2">
+                                Defensa de Preguntas (0-20) *
+                            </label>
+                            <input type="number" id="calificacion_defensa" name="calificacion_defensa" 
+                                   min="0" max="20" step="0.5" required
+                                   placeholder="16.5"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-principal focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label for="calificacion_final" class="block text-sm font-medium text-gray-700 mb-2">
+                                Calificación Final (calculada automáticamente)
+                            </label>
+                            <input type="number" id="calificacion_final" name="calificacion_final" 
+                                   min="0" max="20" step="0.1" readonly
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">Observaciones</h3>
+                        
+                        <div>
+                            <label for="observaciones_presidente" class="block text-sm font-medium text-gray-700 mb-2">
+                                Comentarios del Presidente *
+                            </label>
+                            <textarea id="observaciones_presidente" name="observaciones_presidente" required rows="8"
+                                      placeholder="Escriba sus observaciones sobre la sustentación..."
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-principal focus:border-transparent resize-none"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="recomendaciones" class="block text-sm font-medium text-gray-700 mb-2">
+                                Recomendaciones
+                            </label>
+                            <textarea id="recomendaciones" name="recomendaciones" rows="4"
+                                      placeholder="Recomendaciones para el estudiante..."
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-principal focus:border-transparent resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resultado de la Sustentación -->
+                <div class="border-t pt-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Resultado de la Sustentación</h3>
+                    
+                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                        <div class="text-center p-4 bg-green-50 rounded-lg border border-green-200">
+                            <div class="text-2xl font-bold text-green-700" id="promedio-display">0.0</div>
+                            <div class="text-sm text-green-600">Promedio Final</div>
+                        </div>
+                        
+                        <div class="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <div class="text-lg font-semibold text-blue-700" id="estado-display">Calculando...</div>
+                            <div class="text-sm text-blue-600">Estado</div>
+                        </div>
+                        
+                        <div class="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="text-lg font-semibold text-gray-700" id="nota-literal">-</div>
+                            <div class="text-sm text-gray-600">Calificación</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex justify-between items-center pt-6 border-t">
+                    <a href="/docente/dashboard" 
+                       class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Volver al Dashboard
+                    </a>
+                    
+                    <div class="space-x-3">
+                        <button type="submit" name="accion" value="rechazar"
+                                class="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                                onclick="return confirm('¿Está seguro de rechazar esta sustentación?')">
+                            <i class="fas fa-times mr-2"></i>
+                            Rechazar
+                        </button>
+                        
+                        <button type="submit" name="accion" value="aprobar"
+                                class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                                onclick="return confirm('¿Está seguro de aprobar esta sustentación?')">
+                            <i class="fas fa-check mr-2"></i>
+                            Aprobar Sustentación
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sustentación ya calificada -->
+        <div class="bg-white rounded-lg shadow p-6" th:if="${sustentacion != null && (sustentacion.estado == 'aprobado' || sustentacion.estado == 'rechazado')}">
+            <h2 class="text-2xl font-bold text-texto mb-4 flex items-center">
+                <i class="fas fa-clipboard-check mr-3 text-principal"></i>
+                Sustentación Calificada
+            </h2>
+            
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <p><strong>Estado:</strong> 
+                            <span th:class="${sustentacion.estado == 'aprobado'} ? 'px-3 py-1 rounded text-sm bg-green-100 text-green-800' : 
+                                            'px-3 py-1 rounded text-sm bg-red-100 text-red-800'"
+                                  th:text="${#strings.capitalize(sustentacion.estado)}">Aprobado</span>
+                        </p>
+                        <p><strong>Calificación Final:</strong> <span th:text="${sustentacion.calificacion_final ?: 'No asignada'}">17.5</span></p>
+                        <p><strong>Fecha de Calificación:</strong> <span th:text="${#temporals.format(sustentacion.fecha_calificacion, 'dd/MM/yyyy HH:mm')}">25/07/2025 16:30</span></p>
+                    </div>
+                    <div th:if="${sustentacion.observaciones_presidente}">
+                        <p class="font-medium text-gray-700 mb-2">Observaciones del Presidente:</p>
+                        <div class="bg-white p-3 rounded border">
+                            <p class="text-sm text-gray-700" th:text="${sustentacion.observaciones_presidente}">Excelente presentación, dominio del tema...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <a href="/docente/dashboard" 
+                   class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Volver al Dashboard
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Cálculo automático de la calificación final
+        function calcularCalificacionFinal() {
+            const presentacion = parseFloat(document.getElementById('calificacion_presentacion').value) || 0;
+            const contenido = parseFloat(document.getElementById('calificacion_contenido').value) || 0;
+            const defensa = parseFloat(document.getElementById('calificacion_defensa').value) || 0;
+            
+            const promedio = ((presentacion + contenido + defensa) / 3).toFixed(1);
+            
+            document.getElementById('calificacion_final').value = promedio;
+            document.getElementById('promedio-display').textContent = promedio;
+            
+            // Actualizar estado
+            const estado = promedio >= 11.0 ? 'APROBADO' : 'DESAPROBADO';
+            const estadoDisplay = document.getElementById('estado-display');
+            estadoDisplay.textContent = estado;
+            estadoDisplay.className = promedio >= 11.0 ? 'text-lg font-semibold text-green-700' : 'text-lg font-semibold text-red-700';
+            
+            // Calificación literal
+            let literal = '';
+            if (promedio >= 18) literal = 'Excelente';
+            else if (promedio >= 16) literal = 'Muy Bueno';
+            else if (promedio >= 14) literal = 'Bueno';
+            else if (promedio >= 11) literal = 'Regular';
+            else literal = 'Deficiente';
+            
+            document.getElementById('nota-literal').textContent = literal;
+        }
+
+        // Event listeners para cálculo automático
+        document.addEventListener('DOMContentLoaded', function() {
+            ['calificacion_presentacion', 'calificacion_contenido', 'calificacion_defensa'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('input', calcularCalificacionFinal);
+                    input.addEventListener('change', calcularCalificacionFinal);
+                }
+            });
+        });
+
+        // Validación del formulario
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const presentacion = parseFloat(document.getElementById('calificacion_presentacion').value);
+            const contenido = parseFloat(document.getElementById('calificacion_contenido').value);
+            const defensa = parseFloat(document.getElementById('calificacion_defensa').value);
+            const observaciones = document.getElementById('observaciones_presidente').value.trim();
+            
+            if (!presentacion || !contenido || !defensa || !observaciones) {
+                e.preventDefault();
+                alert('Por favor complete todos los campos obligatorios');
+                return;
+            }
+            
+            if (presentacion < 0 || presentacion > 20 || contenido < 0 || contenido > 20 || defensa < 0 || defensa > 20) {
+                e.preventDefault();
+                alert('Las calificaciones deben estar entre 0 y 20');
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

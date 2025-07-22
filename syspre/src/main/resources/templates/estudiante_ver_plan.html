@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Plan de Práctica - SYSPRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Navegación Superior -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <img src="/static/img/unap.png" alt="UNAP Logo" class="w-10 h-10">
+                    <span class="text-xl font-bold">SYSPRE</span>
+                    <span class="text-sm opacity-75">| Estudiante</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <span th:text="${user != null ? user.nombres + ' ' + user.apellidos : 'Usuario'}" class="text-sm">Usuario</span>
+                    <form method="POST" action="/logout" class="inline">
+                        <button type="submit" class="text-blue-200 hover:text-white text-sm">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <nav class="text-sm text-gray-600">
+                <a href="/estudiante/dashboard" class="hover:text-blue-600">Dashboard</a> 
+                <span class="mx-2">/</span>
+                <span class="text-gray-900">Mi Plan de Práctica</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Mi Plan de Práctica</h1>
+                <p class="text-gray-600 mt-2">Información detallada de su plan de prácticas pre-profesionales</p>
+            </div>
+            
+            <div class="mt-4 md:mt-0 flex space-x-3">
+                <div th:if="${plan == null}">
+                    <a href="/estudiante/plan/crear" 
+                       class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200 inline-flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        Crear Plan
+                    </a>
+                </div>
+                
+                <div th:if="${plan != null && plan.estado == 'borrador'}">
+                    <a th:href="@{/estudiante/plan/editar}" 
+                       class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm inline-flex items-center">
+                        <i class="fas fa-edit mr-2"></i>
+                        Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado del Plan -->
+        <div th:if="${plan == null}" class="bg-white rounded-lg shadow-sm border p-12 text-center">
+            <i class="fas fa-file-alt text-6xl text-gray-300 mb-4"></i>
+            <h2 class="text-xl font-semibold text-gray-700 mb-2">No tiene un plan de práctica</h2>
+            <p class="text-gray-500 mb-6">Para comenzar sus prácticas pre-profesionales, debe crear su plan de práctica</p>
+            <a href="/estudiante/plan/crear" 
+               class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-200 inline-flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                Crear Plan de Práctica
+            </a>
+        </div>
+
+        <!-- Información del Plan -->
+        <div th:if="${plan != null}">
+            
+            <!-- Estado y Progreso -->
+            <div class="bg-white rounded-lg shadow-sm border p-6 mb-8">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clipboard-list text-2xl text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800">Plan de Práctica</h2>
+                            <p class="text-sm text-gray-600" th:text="${'Creado: ' + (plan != null ? plan.fecha_creacion : 'Fecha no disponible')}">Creado: --</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-right">
+                        <div th:switch="${plan.estado}">
+                            <span th:case="'borrador'" class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-edit mr-1"></i> Borrador
+                            </span>
+                            <span th:case="'enviado'" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-clock mr-1"></i> En Revisión
+                            </span>
+                            <span th:case="'aprobado_docente'" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-user-check mr-1"></i> Aprobado por Docente
+                            </span>
+                            <span th:case="'aprobado_coordinador'" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-check-circle mr-1"></i> Aprobado Final
+                            </span>
+                            <span th:case="'rechazado'" class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-times-circle mr-1"></i> Rechazado
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información de la Empresa -->
+            <div class="bg-white rounded-lg shadow-sm border mb-8">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-building text-blue-600 mr-2"></i>
+                        Información de la Empresa
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de la Empresa</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.empresa != null ? plan.empresa : 'No especificado'}">--</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RUC</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.ruc != null ? plan.ruc : 'No especificado'}">--</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Supervisor</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.supervisor != null ? plan.supervisor : 'No especificado'}">--</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Cargo del Supervisor</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.cargo_supervisor != null ? plan.cargo_supervisor : 'No especificado'}">--</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.direccion_empresa != null ? plan.direccion_empresa : 'No especificado'}">--</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.telefono_empresa != null ? plan.telefono_empresa : 'No especificado'}">--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivos -->
+            <div class="bg-white rounded-lg shadow-sm border mb-8">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-target text-green-600 mr-2"></i>
+                        Objetivos
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Objetivos del Plan</label>
+                        <div class="bg-gray-50 px-4 py-3 rounded-lg">
+                            <p class="text-gray-900 whitespace-pre-line" th:text="${plan.objetivos != null ? plan.objetivos : 'No especificado'}">--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actividades y Cronograma -->
+            <div class="grid md:grid-cols-1 gap-8 mb-8">
+                <div class="bg-white rounded-lg shadow-sm border">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <i class="fas fa-tasks text-purple-600 mr-2"></i>
+                            Actividades Planificadas
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="bg-gray-50 px-4 py-3 rounded-lg">
+                            <p class="text-gray-900 whitespace-pre-line" th:text="${plan.actividades != null ? plan.actividades : 'No especificado'}">--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cronograma -->
+            <div class="bg-white rounded-lg shadow-sm border mb-8">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-calendar text-orange-600 mr-2"></i>
+                        Cronograma y Fechas
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Inicio</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.fecha_inicio != null ? plan.fecha_inicio : 'No especificado'}">--</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Fin</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.fecha_fin != null ? plan.fecha_fin : 'No especificado'}">--</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Total de Horas</label>
+                            <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.total_horas != null ? plan.total_horas : 'No especificado'}">--</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Horario</label>
+                        <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.horario != null ? plan.horario : 'No especificado'}">--</p>
+                    </div>
+                    <div th:if="${plan.fecha_inicio_plan != null}" class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Programada de Inicio</label>
+                        <p class="text-gray-900 bg-gray-50 px-3 py-2 rounded" th:text="${plan.fecha_inicio_plan}">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archivo del Plan -->
+            <div th:if="${plan.archivo_plan != null}" class="bg-white rounded-lg shadow-sm border mb-8">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-file-pdf text-red-600 mr-2"></i>
+                        Documento del Plan
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-file-pdf text-red-600 text-xl"></i>
+                            <div>
+                                <p class="font-medium text-gray-900">Plan de Práctica.pdf</p>
+                                <p class="text-sm text-gray-500">Documento oficial del plan</p>
+                            </div>
+                        </div>
+                        <a th:href="@{/download/plan/{id}(id=${plan.id})}" 
+                           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm inline-flex items-center">
+                            <i class="fas fa-download mr-2"></i>
+                            Descargar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comentarios de Revisión -->
+            <div th:if="${plan.comentarios_docente != null || plan.comentarios_coordinador != null}" 
+                 class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-comments text-indigo-600 mr-2"></i>
+                        Comentarios de Revisión
+                    </h3>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div th:if="${plan.comentarios_docente != null}">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Comentarios del Docente</label>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 px-4 py-3 rounded">
+                            <p class="text-gray-900 whitespace-pre-line" th:text="${plan.comentarios_docente}">--</p>
+                        </div>
+                    </div>
+                    <div th:if="${plan.comentarios_coordinador != null}">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Comentarios del Coordinador</label>
+                        <div class="bg-green-50 border-l-4 border-green-500 px-4 py-3 rounded">
+                            <p class="text-gray-900 whitespace-pre-line" th:text="${plan.comentarios_coordinador}">--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Universidad Nacional del Altiplano - SYSPRE</p>
+        </div>
+    </footer>
+</body>
+</html>
