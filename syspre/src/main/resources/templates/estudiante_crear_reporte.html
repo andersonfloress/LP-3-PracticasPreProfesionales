@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Reporte Semanal - SYSPRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Navegación Superior -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <img src="/static/img/unap.png" alt="UNAP Logo" class="w-10 h-10">
+                    <span class="text-xl font-bold">SYSPRE</span>
+                    <span class="text-sm opacity-75">| Estudiante</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <span th:text="${user != null ? user.nombres + ' ' + user.apellidos : 'Usuario'}" class="text-sm">Usuario</span>
+                    <form method="POST" action="/logout" class="inline">
+                        <button type="submit" class="text-blue-200 hover:text-white text-sm">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <nav class="text-sm text-gray-600">
+                <a href="/estudiante/dashboard" class="hover:text-blue-600">Dashboard</a> 
+                <span class="mx-2">/</span>
+                <a href="/estudiante/reportes" class="hover:text-blue-600">Reportes Semanales</a>
+                <span class="mx-2">/</span>
+                <span class="text-gray-900">Crear Reporte</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Crear Reporte Semanal</h1>
+            <p class="text-gray-600 mt-2">Registre las actividades realizadas durante la semana</p>
+        </div>
+
+        <!-- Alertas -->
+        <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <span th:text="${error}">Error message</span>
+        </div>
+        
+        <div th:if="${success}" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+            <span th:text="${success}">Success message</span>
+        </div>
+
+        <!-- Formulario -->
+        <div class="bg-white rounded-lg shadow-sm border p-8">
+            <form method="POST" action="/estudiante/reporte/crear" enctype="multipart/form-data">
+                
+                <!-- Información General -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-calendar text-blue-600 mr-2"></i>
+                        Información del Período
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <label for="semana_numero" class="block text-sm font-medium text-gray-700 mb-2">
+                                Semana N° *
+                            </label>
+                            <input type="number" id="semana_numero" name="semana_numero" required min="1" max="26"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   th:value="${reporte != null ? reporte.semanaNumero : ''}"
+                                   placeholder="1">
+                        </div>
+                        
+                        <div>
+                            <label for="fecha_inicio" class="block text-sm font-medium text-gray-700 mb-2">
+                                Fecha de Inicio *
+                            </label>
+                            <input type="date" id="fecha_inicio" name="fecha_inicio" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   th:value="${reporte != null ? reporte.fechaInicio : ''}">
+                        </div>
+                        
+                        <div>
+                            <label for="fecha_fin" class="block text-sm font-medium text-gray-700 mb-2">
+                                Fecha de Fin *
+                            </label>
+                            <input type="date" id="fecha_fin" name="fecha_fin" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   th:value="${reporte != null ? reporte.fechaFin : ''}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividades Realizadas -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-tasks text-green-600 mr-2"></i>
+                        Actividades Realizadas
+                    </h2>
+                    
+                    <div>
+                        <label for="actividades_realizadas" class="block text-sm font-medium text-gray-700 mb-2">
+                            Describa las actividades desarrolladas durante la semana *
+                        </label>
+                        <textarea id="actividades_realizadas" name="actividades_realizadas" rows="6" required
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  th:text="${reporte != null ? reporte.actividadesRealizadas : ''}"
+                                  placeholder="Detalle las actividades específicas que realizó durante la semana, incluyendo proyectos, tareas, reuniones, capacitaciones, etc."></textarea>
+                    </div>
+                </div>
+
+                <!-- Horas Trabajadas -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-clock text-orange-600 mr-2"></i>
+                        Control de Horas
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="horas_trabajadas" class="block text-sm font-medium text-gray-700 mb-2">
+                                Horas Trabajadas *
+                            </label>
+                            <input type="number" id="horas_trabajadas" name="horas_trabajadas" required min="1" max="60"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   th:value="${reporte != null ? reporte.horasTrabajadas : ''}"
+                                   placeholder="40">
+                            <p class="text-xs text-gray-500 mt-1">Número total de horas trabajadas en la semana</p>
+                        </div>
+                        
+                        <div>
+                            <label for="supervisor_empresa" class="block text-sm font-medium text-gray-700 mb-2">
+                                Supervisor en la Empresa
+                            </label>
+                            <input type="text" id="supervisor_empresa" name="supervisor_empresa"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   th:value="${reporte != null ? reporte.supervisorEmpresa : ''}"
+                                   placeholder="Nombre del supervisor directo">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logros y Dificultades -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                        Evaluación Semanal
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="logros_obtenidos" class="block text-sm font-medium text-gray-700 mb-2">
+                                Logros y Aprendizajes
+                            </label>
+                            <textarea id="logros_obtenidos" name="logros_obtenidos" rows="4"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      th:text="${reporte != null ? reporte.logrosObtenidos : ''}"
+                                      placeholder="Describa los principales logros, aprendizajes y competencias desarrolladas"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="dificultades_encontradas" class="block text-sm font-medium text-gray-700 mb-2">
+                                Dificultades Encontradas
+                            </label>
+                            <textarea id="dificultades_encontradas" name="dificultades_encontradas" rows="4"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      th:text="${reporte != null ? reporte.dificultadesEncontradas : ''}"
+                                      placeholder="Mencione las principales dificultades y cómo las resolvió o planea resolverlas"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Archivo de Evidencias -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-file-upload text-red-600 mr-2"></i>
+                        Evidencias
+                    </h2>
+                    
+                    <div>
+                        <label for="archivo_evidencias" class="block text-sm font-medium text-gray-700 mb-2">
+                            Subir Evidencias (Opcional)
+                        </label>
+                        <input type="file" id="archivo_evidencias" name="archivo_evidencias" accept=".pdf,.jpg,.jpeg,.png,.docx"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <p class="text-xs text-gray-500 mt-1">Formatos: PDF, JPG, PNG, DOCX. Máximo 10MB</p>
+                    </div>
+                </div>
+
+                <!-- Observaciones -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-comment text-gray-600 mr-2"></i>
+                        Observaciones Adicionales
+                    </h2>
+                    
+                    <div>
+                        <label for="observaciones" class="block text-sm font-medium text-gray-700 mb-2">
+                            Comentarios o Sugerencias
+                        </label>
+                        <textarea id="observaciones" name="observaciones" rows="3"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  th:text="${reporte != null ? reporte.observaciones : ''}"
+                                  placeholder="Comentarios adicionales, sugerencias para mejorar el proceso, etc."></textarea>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t">
+                    <button type="submit" name="accion" value="guardar_borrador"
+                            class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition duration-200">
+                        <i class="fas fa-save mr-2"></i>
+                        Guardar Borrador
+                    </button>
+                    
+                    <button type="submit" name="accion" value="enviar_calificacion"
+                            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-200">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Enviar para Calificación
+                    </button>
+                    
+                    <a href="/estudiante/reportes" 
+                       class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium text-center transition duration-200">
+                        <i class="fas fa-times mr-2"></i>
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Universidad Nacional del Altiplano - SYSPRE</p>
+        </div>
+    </footer>
+</body>
+</html>

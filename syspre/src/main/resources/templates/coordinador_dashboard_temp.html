@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Coordinador - SYSPRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Navegación Superior -->
+    <nav class="bg-purple-600 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <img src="/static/img/unap.png" alt="UNAP Logo" class="w-10 h-10">
+                    <span class="text-xl font-bold">SYSPRE</span>
+                    <span class="text-sm opacity-75">| Coordinador</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm">Coordinador</span>
+                    <a href="/coordinador/documentos/gestionar" class="text-purple-200 hover:text-white text-sm mr-4">
+                        <i class="fas fa-folder-open"></i> Documentos
+                    </a>
+                    <form method="POST" action="/logout" class="inline">
+                        <button type="submit" class="text-purple-200 hover:text-white text-sm">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Header del Dashboard -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Dashboard del Coordinador</h1>
+            <p class="text-gray-600 mt-2">Coordinación y gestión de prácticas pre-profesionales</p>
+        </div>
+
+        <!-- Estadísticas Generales -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg p-6 shadow-sm border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Estudiantes Activos</p>
+                        <p class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                    <i class="fas fa-users text-2xl text-blue-600"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Planes Aprobados</p>
+                        <p class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                    <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Asignaciones Pendientes</p>
+                        <p class="text-2xl font-bold text-gray-900">0</p>
+                    </div>
+                    <i class="fas fa-user-plus text-2xl text-orange-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tareas del Coordinador -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            
+            <!-- Planes para Revisar -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-clipboard-check text-purple-600 mr-2"></i>
+                        Planes para Revisar
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-check-circle text-4xl mb-4"></i>
+                        <p>No hay planes pendientes de revisión</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estudiantes sin Asignar -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-user-plus text-orange-600 mr-2"></i>
+                        Estudiantes sin Asignar
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-check-circle text-4xl mb-4"></i>
+                        <p>Todos los estudiantes tienen docente asignado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="bg-white rounded-lg shadow-sm border p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="/coordinador/planes" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-file-alt text-blue-600 text-xl mr-3"></i>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Revisar Planes</h3>
+                        <p class="text-sm text-gray-600">Revisar planes de práctica</p>
+                    </div>
+                </a>
+                
+                <a href="/coordinador/asignaciones" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-user-plus text-purple-600 text-xl mr-3"></i>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Asignar Docentes</h3>
+                        <p class="text-sm text-gray-600">Gestionar asignaciones</p>
+                    </div>
+                </a>
+                
+                <a href="/coordinador/sustentaciones" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-award text-green-600 text-xl mr-3"></i>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Sustentaciones</h3>
+                        <p class="text-sm text-gray-600">Programar sustentaciones</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Universidad Nacional del Altiplano - SYSPRE</p>
+        </div>
+    </footer>
+</body>
+</html>

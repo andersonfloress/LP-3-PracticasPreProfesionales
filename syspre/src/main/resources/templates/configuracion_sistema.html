@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuración del Sistema - SYSPRE 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-50 font-sans">
+  <header class="bg-white shadow-lg border-b-4 border-red-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-6">
+        <div class="flex items-center">
+          <i class="fas fa-cogs text-3xl text-red-600 mr-3"></i>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">Configuración del Sistema</h1>
+            <p class="text-sm text-gray-600">SYSPRE 2025</p>
+          </div>
+        </div>
+        
+        <nav class="hidden md:flex space-x-8">
+          <a href="/dashboard/admin" class="text-gray-700 hover:text-red-600">
+            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+          </a>
+          <a href="/configuracion" class="text-red-600 font-medium">
+            <i class="fas fa-cogs mr-2"></i>Configuración
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <!-- Pestañas de Configuración -->
+    <div class="bg-white rounded-lg shadow mb-6">
+      <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+          <button class="border-transparent text-red-600 border-b-2 border-red-500 py-4 px-1 text-sm font-medium tab-button active" data-tab="general">
+            <i class="fas fa-cog mr-2"></i>General
+          </button>
+          <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 text-sm font-medium tab-button" data-tab="usuarios">
+            <i class="fas fa-users mr-2"></i>Usuarios
+          </button>
+          <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 text-sm font-medium tab-button" data-tab="notificaciones">
+            <i class="fas fa-bell mr-2"></i>Notificaciones
+          </button>
+          <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 text-sm font-medium tab-button" data-tab="seguridad">
+            <i class="fas fa-shield-alt mr-2"></i>Seguridad
+          </button>
+          <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 text-sm font-medium tab-button" data-tab="backup">
+            <i class="fas fa-database mr-2"></i>Backup
+          </button>
+        </nav>
+      </div>
+
+      <!-- Contenido de Pestañas -->
+      <div class="p-6">
+        <!-- Pestaña General -->
+        <div id="general" class="tab-content">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Configuración General del Sistema</h3>
+          
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Sistema</label>
+                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="SYSPRE 2025" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Versión</label>
+                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="2.0.1" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Institución</label>
+                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="Universidad Nacional" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Año Académico</label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500">
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+                  <option value="2023">2023</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Período Actual</label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500">
+                  <option value="2025-1">2025-I</option>
+                  <option value="2025-2">2025-II</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Zona Horaria</label>
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500">
+                  <option value="America/Lima">Lima, Perú (UTC-5)</option>
+                  <option value="America/Bogota">Bogotá, Colombia (UTC-5)</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del Sistema</label>
+              <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500">Sistema de Gestión de Prácticas Pre-Profesionales para la administración integral del proceso de prácticas estudiantiles.</textarea>
+            </div>
+            
+            <div class="flex justify-end">
+              <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                <i class="fas fa-save mr-2"></i>Guardar Configuración
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pestaña Usuarios -->
+        <div id="usuarios" class="tab-content hidden">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Configuración de Usuarios</h3>
+          
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Máximo de Estudiantes por Docente</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="25" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Duración Mínima de Prácticas (horas)</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="240" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Duración Máxima de Prácticas (horas)</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="480" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Días para Entrega de Reportes</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="7" />
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <h4 class="text-md font-medium text-gray-800">Permisos por Rol</h4>
+              
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Estudiantes pueden editar reportes aprobados</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Docentes pueden crear empresas</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Auto-registro de estudiantes</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Requiere aprobación para nuevos usuarios</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex justify-end">
+              <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                <i class="fas fa-save mr-2"></i>Guardar Configuración
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pestaña Notificaciones -->
+        <div id="notificaciones" class="tab-content hidden">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Configuración de Notificaciones</h3>
+          
+          <form class="space-y-6">
+            <div class="space-y-4">
+              <h4 class="text-md font-medium text-gray-800">Notificaciones por Email</h4>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Servidor SMTP</label>
+                  <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="smtp.gmail.com" />
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Puerto SMTP</label>
+                  <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="587" />
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Usuario SMTP</label>
+                  <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="sistema@universidad.edu.pe" />
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña SMTP</label>
+                  <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" />
+                </div>
+              </div>
+              
+              <div class="space-y-3">
+                <h5 class="text-sm font-medium text-gray-800">Eventos que Generan Notificaciones</h5>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Nuevo usuario registrado</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Reporte entregado</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Práctica completada</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Recordatorio de reporte pendiente</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex justify-end">
+              <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                <i class="fas fa-save mr-2"></i>Guardar Configuración
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pestaña Seguridad -->
+        <div id="seguridad" class="tab-content hidden">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Configuración de Seguridad</h3>
+          
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Mínimo de Caracteres en Contraseña</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="8" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Intentos Máximos de Login</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="3" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tiempo de Bloqueo (minutos)</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="15" />
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Duración de Sesión (horas)</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="8" />
+              </div>
+            </div>
+            
+            <div class="space-y-3">
+              <h4 class="text-md font-medium text-gray-800">Políticas de Seguridad</h4>
+              
+              <div class="flex items-center justify-between">
+                <label class="text-sm text-gray-700">Requerir caracteres especiales en contraseñas</label>
+                <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+              </div>
+              
+              <div class="flex items-center justify-between">
+                <label class="text-sm text-gray-700">Requerir números en contraseñas</label>
+                <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+              </div>
+              
+              <div class="flex items-center justify-between">
+                <label class="text-sm text-gray-700">Requerir mayúsculas y minúsculas</label>
+                <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+              </div>
+              
+              <div class="flex items-center justify-between">
+                <label class="text-sm text-gray-700">Habilitar autenticación de dos factores</label>
+                <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" />
+              </div>
+              
+              <div class="flex items-center justify-between">
+                <label class="text-sm text-gray-700">Registro de actividades del sistema</label>
+                <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+              </div>
+            </div>
+            
+            <div class="flex justify-end">
+              <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                <i class="fas fa-save mr-2"></i>Guardar Configuración
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pestaña Backup -->
+        <div id="backup" class="tab-content hidden">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Configuración de Backup</h3>
+          
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-green-50 p-4 rounded-lg">
+                <div class="flex items-center">
+                  <i class="fas fa-check-circle text-2xl text-green-600 mr-3"></i>
+                  <div>
+                    <h4 class="text-lg font-semibold text-green-800">Último Backup</h4>
+                    <p class="text-sm text-green-600">22 Enero 2025 - 02:00</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <div class="flex items-center">
+                  <i class="fas fa-database text-2xl text-blue-600 mr-3"></i>
+                  <div>
+                    <h4 class="text-lg font-semibold text-blue-800">Tamaño de BD</h4>
+                    <p class="text-sm text-blue-600">245.7 MB</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-yellow-50 p-4 rounded-lg">
+                <div class="flex items-center">
+                  <i class="fas fa-clock text-2xl text-yellow-600 mr-3"></i>
+                  <div>
+                    <h4 class="text-lg font-semibold text-yellow-800">Próximo Backup</h4>
+                    <p class="text-sm text-yellow-600">23 Enero 2025 - 02:00</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <form class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Frecuencia de Backup</label>
+                  <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500">
+                    <option value="daily">Diario</option>
+                    <option value="weekly">Semanal</option>
+                    <option value="monthly">Mensual</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Hora de Backup</label>
+                  <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="02:00" />
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Retener Backups (días)</label>
+                  <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500" value="30" />
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Compresión de Archivos</label>
+                  <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500">
+                    <option value="gzip">GZIP</option>
+                    <option value="zip">ZIP</option>
+                    <option value="none">Sin Compresión</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="space-y-3">
+                <h4 class="text-md font-medium text-gray-800">Opciones de Backup</h4>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Incluir archivos de usuarios</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Incluir logs del sistema</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <label class="text-sm text-gray-700">Notificar cuando termine backup</label>
+                  <input type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked />
+                </div>
+              </div>
+              
+              <div class="flex justify-between">
+                <div class="space-x-3">
+                  <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    <i class="fas fa-play mr-2"></i>Backup Manual
+                  </button>
+                  <button type="button" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                    <i class="fas fa-download mr-2"></i>Descargar Último
+                  </button>
+                </div>
+                
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                  <i class="fas fa-save mr-2"></i>Guardar Configuración
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Funcionalidad de pestañas
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const targetTab = this.getAttribute('data-tab');
+        
+        // Quitar clase activa de todos los botones
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.remove('text-red-600', 'border-red-500', 'active');
+          btn.classList.add('text-gray-500');
+        });
+        
+        // Activar botón actual
+        this.classList.remove('text-gray-500');
+        this.classList.add('text-red-600', 'border-b-2', 'border-red-500', 'active');
+        
+        // Ocultar todos los contenidos
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.add('hidden');
+        });
+        
+        // Mostrar contenido target
+        document.getElementById(targetTab).classList.remove('hidden');
+      });
+    });
+
+    // Funcionalidad de formularios
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Configuración guardada correctamente');
+      });
+    });
+
+    // Botones especiales de backup
+    document.querySelector('button[class*="bg-blue-600"]').addEventListener('click', function() {
+      if (confirm('¿Desea crear un backup manual del sistema ahora?')) {
+        alert('Iniciando backup manual...');
+      }
+    });
+
+    document.querySelector('button[class*="bg-green-600"]').addEventListener('click', function() {
+      alert('Descargando último backup...');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Coordinador - SYSPRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-university text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-semibold text-gray-900">SYSPRE</h1>
+                        <p class="text-sm text-gray-500">Dashboard Coordinador</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center text-sm text-gray-600">
+                        <i class="fas fa-user-tie mr-2"></i>
+                        <span th:text="|${user.nombres} ${user.apellidos}|">Nombre Coordinador</span>
+                    </div>
+                    <a href="/perfil/coordinador" class="text-blue-600 hover:text-blue-900">
+                        <i class="fas fa-user-cog"></i>
+                    </a>
+                    <a href="/" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Estudiantes Activos -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-graduate text-blue-600 text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Estudiantes Activos</p>
+                        <p class="text-2xl font-bold text-gray-900" th:text="${estudiantesActivos}">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Planes Aprobados -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check-circle text-green-600 text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Planes Aprobados</p>
+                        <p class="text-2xl font-bold text-gray-900" th:text="${planesAprobados}">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Asignaciones Pendientes -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-clock text-orange-600 text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Asignaciones Pendientes</p>
+                        <p class="text-2xl font-bold text-gray-900" th:text="${asignacionesPendientes}">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="bg-white rounded-lg shadow-sm border mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-bolt text-yellow-600 mr-2"></i>
+                    Acciones Rápidas
+                </h2>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <a href="/coordinador/asignar-docente" 
+                       class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition">
+                        <i class="fas fa-user-plus text-orange-600 text-2xl mr-3"></i>
+                        <div>
+                            <p class="font-medium text-gray-900">Asignar Docente</p>
+                            <p class="text-sm text-gray-500">Asignar asesores</p>
+                        </div>
+                    </a>
+                    
+                    <a href="/coordinador/planes" 
+                       class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                        <i class="fas fa-file-alt text-blue-600 text-2xl mr-3"></i>
+                        <div>
+                            <p class="font-medium text-gray-900">Revisar Planes</p>
+                            <p class="text-sm text-gray-500">Aprobar propuestas</p>
+                        </div>
+                    </a>
+                    
+                    <a href="/coordinador/documentos" 
+                       class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition">
+                        <i class="fas fa-file-upload text-indigo-600 text-2xl mr-3"></i>
+                        <div>
+                            <p class="font-medium text-gray-900">Gestionar Documentos</p>
+                            <p class="text-sm text-gray-500">Subir reglamentos</p>
+                        </div>
+                    </a>
+                    
+                    <a href="/coordinador/sustentaciones" 
+                       class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition">
+                        <i class="fas fa-calendar-check text-purple-600 text-2xl mr-3"></i>
+                        <div>
+                            <p class="font-medium text-gray-900">Sustentaciones</p>
+                            <p class="text-sm text-gray-500">Programar defensas</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estudiantes sin Asignar -->
+        <div class="bg-white rounded-lg shadow-sm border">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-user-plus text-orange-600 mr-2"></i>
+                    Estudiantes sin Asignar
+                </h2>
+            </div>
+            <div class="p-6">
+                <div th:if="${estudiantesSinAsignar.empty}" class="text-center text-gray-500 py-8">
+                    <i class="fas fa-check-circle text-4xl mb-4"></i>
+                    <p>Todos los estudiantes tienen docente asignado</p>
+                </div>
+                
+                <div th:unless="${estudiantesSinAsignar.empty}">
+                    <div th:each="estudiante : ${estudiantesSinAsignar}" 
+                         class="flex items-center justify-between p-4 border border-gray-200 rounded-lg mb-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-user-graduate text-blue-600 mr-3"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-900" th:text="|${estudiante.nombres} ${estudiante.apellidos}|">Nombre Estudiante</h4>
+                                <p class="text-sm text-gray-600" th:text="${estudiante.codigo}">Código</p>
+                                <p class="text-xs text-gray-500" th:text="${estudiante.email}">Email</p>
+                            </div>
+                        </div>
+                        <a href="/coordinador/asignar-docente" 
+                           class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition text-sm">
+                            <i class="fas fa-user-plus mr-1"></i>
+                            Asignar Docente
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

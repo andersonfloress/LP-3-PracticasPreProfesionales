@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Prácticas - SYSPRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-university text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-semibold text-gray-900">SYSPRE</h1>
+                        <p class="text-sm text-gray-500">Gestión de Planes de Práctica</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center text-sm text-gray-600">
+                        <i class="fas fa-user-tie mr-2"></i>
+                        <span th:text="|${user.nombres} ${user.apellidos}|">Coordinador</span>
+                    </div>
+                    <a href="/coordinador/dashboard" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Volver al Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Título de la página -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900">Planes de Práctica Pendientes</h2>
+            <p class="text-gray-600 mt-1">Revisa y aprueba los planes de práctica enviados por los estudiantes</p>
+        </div>
+
+        <!-- Filtros y estadísticas -->
+        <div class="bg-white rounded-lg shadow-sm border mb-6 p-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-blue-600" th:text="${planes.size()}">0</div>
+                    <div class="text-sm text-gray-600">Total de Planes</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-yellow-600">0</div>
+                    <div class="text-sm text-gray-600">Pendientes</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-600">0</div>
+                    <div class="text-sm text-gray-600">Aprobados</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-red-600">0</div>
+                    <div class="text-sm text-gray-600">Rechazados</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Planes -->
+        <div class="bg-white rounded-lg shadow-sm border">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-clipboard-list text-indigo-600 mr-2"></i>
+                    Planes para Revisar
+                </h3>
+            </div>
+            
+            <div th:if="${planes.empty}" class="text-center py-12">
+                <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No hay planes pendientes</h3>
+                <p class="text-gray-600">Todos los planes han sido revisados o no se han enviado planes nuevos.</p>
+            </div>
+            
+            <div th:unless="${planes.empty}" class="divide-y divide-gray-200">
+                <div th:each="plan : ${planes}" class="p-6 hover:bg-gray-50">
+                    <div class="flex items-center justify-between">
+                        <!-- Información del Plan -->
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-file-alt text-blue-600 text-lg"></i>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">
+                                    Plan de <span th:text="|${plan.estudiante_nombres} ${plan.estudiante_apellidos}|">Estudiante</span>
+                                </h4>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    <div class="flex items-center space-x-4">
+                                        <span class="flex items-center">
+                                            <i class="fas fa-building mr-1"></i>
+                                            <span th:text="${plan.empresa}">Empresa</span>
+                                        </span>
+                                        <span class="flex items-center">
+                                            <i class="fas fa-calendar mr-1"></i>
+                                            <span th:text="${plan.fecha_creacion}">Fecha</span>
+                                        </span>
+                                        <span class="flex items-center">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                                                Pendiente de Revisión
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-2">
+                                    Plan ID: <span th:text="${plan.id}">ID</span> • 
+                                    Estado: <span th:text="${plan.estado}">Estado</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Acciones -->
+                        <div class="flex items-center space-x-3">
+                            <a th:href="@{/coordinador/plan/{id}/revisar(id=${plan.id})}" 
+                               class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center">
+                                <i class="fas fa-eye mr-2"></i>
+                                Revisar Plan
+                            </a>
+                            
+                            <div class="flex space-x-2">
+                                <button onclick="aprobarPlan(this, 'aprobar')" 
+                                        th:data-plan-id="${plan.id}"
+                                        class="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition text-sm">
+                                    <i class="fas fa-check mr-1"></i>
+                                    Aprobar
+                                </button>
+                                <button onclick="aprobarPlan(this, 'rechazar')" 
+                                        th:data-plan-id="${plan.id}"
+                                        class="bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition text-sm">
+                                    <i class="fas fa-times mr-1"></i>
+                                    Rechazar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Aprobación/Rechazo -->
+    <div id="modalAprobacion" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900" id="modalTitulo">Aprobar Plan</h3>
+                </div>
+                
+                <form id="formAprobacion" method="post" class="px-6 py-4">
+                    <div class="mb-4">
+                        <label for="comentarios" class="block text-sm font-medium text-gray-700 mb-2">
+                            Comentarios (opcional)
+                        </label>
+                        <textarea id="comentarios" name="comentarios" rows="4" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                  placeholder="Ingresa tus comentarios sobre el plan..."></textarea>
+                    </div>
+                    
+                    <input type="hidden" name="accion" id="inputAccion" value="">
+                    
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="cerrarModal()" 
+                                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                            Cancelar
+                        </button>
+                        <button type="submit" id="btnConfirmar"
+                                class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
+                            Confirmar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function aprobarPlan(button, accion) {
+            const planId = button.getAttribute('data-plan-id');
+            const modal = document.getElementById('modalAprobacion');
+            const form = document.getElementById('formAprobacion');
+            const titulo = document.getElementById('modalTitulo');
+            const btnConfirmar = document.getElementById('btnConfirmar');
+            const inputAccion = document.getElementById('inputAccion');
+            
+            // Configurar el formulario
+            form.action = `/coordinador/plan/${planId}/revisar`;
+            inputAccion.value = accion;
+            
+            // Configurar el modal según la acción
+            if (accion === 'aprobar') {
+                titulo.textContent = 'Aprobar Plan de Práctica';
+                btnConfirmar.textContent = 'Aprobar Plan';
+                btnConfirmar.className = 'px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition';
+            } else {
+                titulo.textContent = 'Rechazar Plan de Práctica';
+                btnConfirmar.textContent = 'Rechazar Plan';
+                btnConfirmar.className = 'px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition';
+            }
+            
+            // Mostrar modal
+            modal.classList.remove('hidden');
+        }
+        
+        function cerrarModal() {
+            const modal = document.getElementById('modalAprobacion');
+            modal.classList.add('hidden');
+            
+            // Limpiar formulario
+            document.getElementById('comentarios').value = '';
+        }
+        
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('modalAprobacion').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModal();
+            }
+        });
+    </script>
+
+</body>
+</html>
